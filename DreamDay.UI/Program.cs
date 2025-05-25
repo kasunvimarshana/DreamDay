@@ -14,6 +14,7 @@ builder.Services.AddDbContext<DreamDayDbContext>(options => options.UseSqlServer
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
