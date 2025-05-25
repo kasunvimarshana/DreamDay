@@ -43,7 +43,7 @@ namespace DreamDay.UI.Controllers
             {
                 FullName = vm.FullName,
                 Email = vm.Email,
-                Password = vm.Password, // TODO: Hash password here in service layer
+                Password = vm.Password,
                 Role = string.IsNullOrEmpty(vm.Role) ? "User" : vm.Role,
                 CreatedAt = DateTime.UtcNow
             };
@@ -82,10 +82,11 @@ namespace DreamDay.UI.Controllers
 
             user.FullName = vm.FullName;
             user.Email = vm.Email;
-            if (!string.IsNullOrWhiteSpace(vm.Password))
-            {
-                user.Password = vm.Password; // TODO: Hash password in service
-            }
+            //if (!string.IsNullOrWhiteSpace(vm.Password))
+            //{
+            //    user.Password = vm.Password;
+            //}
+            user.Password = vm.Password;
             user.Role = string.IsNullOrEmpty(vm.Role) ? user.Role : vm.Role;
 
             await _userService.UpdateUserAsync(user);

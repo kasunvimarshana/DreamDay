@@ -1,6 +1,7 @@
 ﻿using DreamDay.BLL.Services.Interfaces;
 using DreamDay.DAL.Repositories.Interfaces;
 using DreamDay.Models.Entities;
+using DreamDay.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,32 @@ namespace DreamDay.BLL.Services.Implementations
 
         public Task<User?> GetUserByIdAsync(int id) => _userRepository.GetByIdAsync(id);
 
-        public Task CreateUserAsync(User user) => _userRepository.AddAsync(user);
+        public Task CreateUserAsync(User user)
+        {
+            if (string.IsNullOrWhiteSpace(user.Password))
+            {
+                throw new ArgumentException("Password cannot be empty.");
+            }
 
-        public Task UpdateUserAsync(User user) => _userRepository.UpdateAsync(user);
+            user.Password = PasswordUtility.HashPassword(user.Password);
+
+            return _userRepository.AddAsync(user);
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            var existingUser = await _userRepository.GetByIdAsync(user.Id);
+            if (existingUser == null)
+            {
+                throw new ArgumentException("User not found.");
+            }
+
+            user.Password = string.IsNullOrWhiteSpace(user.Password)
+                ? existingUser.Password
+                : PasswordUtility.HashPassword(user.Password);
+
+            await _userRepository.UpdateAsync(user);
+        }
 
         public Task DeleteUserAsync(int id) => _userRepository.DeleteAsync(id);
     }
