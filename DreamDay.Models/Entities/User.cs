@@ -14,5 +14,8 @@ namespace DreamDay.Models.Entities
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = "User";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public string? PasswordResetToken { get; set; }
+        public DateTime? PasswordResetTokenExpiry { get; set; }
     }
 }

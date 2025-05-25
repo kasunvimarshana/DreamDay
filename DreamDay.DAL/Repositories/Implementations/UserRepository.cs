@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,6 +42,11 @@ namespace DreamDay.DAL.Repositories.Implementations
             if (user == null) return;
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<User?> GetByConditionAsync(Expression<Func<User, bool>> predicate)
+        {
+            return await _context.Users.FirstOrDefaultAsync(predicate);
         }
     }
 }

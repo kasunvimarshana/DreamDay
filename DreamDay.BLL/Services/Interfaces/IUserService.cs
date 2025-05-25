@@ -14,5 +14,12 @@ namespace DreamDay.BLL.Services.Interfaces
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
+
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<bool> SetPasswordResetTokenAsync(int userId, string token, DateTime expiry);
+        Task<User?> GetUserByResetTokenAsync(string token);
+        Task UpdatePasswordAsync(int userId, string newHashedPassword);
+        Task ClearPasswordResetTokenAsync(int userId);
+
     }
 }
