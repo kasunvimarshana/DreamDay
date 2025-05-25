@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DreamDay.DAL\DreamDay.DAL.csproj" />
+    <ProjectReference Include="..\DreamDay.Models\DreamDay.Models.csproj" />
+  </ItemGroup>
+
 </Project>
