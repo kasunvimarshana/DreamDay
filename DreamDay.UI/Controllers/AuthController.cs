@@ -22,6 +22,71 @@ namespace DreamDay.UI.Controllers
             _emailService = emailService;
         }
 
+        [HttpGet("login")]
+        public IActionResult Login(string? returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost("login")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel vm, string? returnUrl = null)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var user = await _userService.GetUserByEmailAsync(vm.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Invalid credentials.");
+                return View(vm);
+            }
+
+            bool passwordValid = PasswordUtility.VerifyPassword(vm.Password, user.Password);
+            if (!passwordValid)
+            {
+                ModelState.AddModelError("", "Invalid credentials.");
+                return View(vm);
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.FullName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
+
+            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return Redirect(returnUrl);
+        }
+
+        [HttpPost("logout")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet("accessdenied")]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         [HttpGet("forgot-password")]
         public IActionResult ForgotPassword()
         {
@@ -106,7 +171,7 @@ namespace DreamDay.UI.Controllers
             await _userService.ClearPasswordResetTokenAsync(user.Id);
 
             TempData["Message"] = "Password has been reset successfully.";
-            return RedirectToAction("forgot-password");
+            return RedirectToAction("Login");
         }
 
     }

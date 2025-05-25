@@ -1,6 +1,7 @@
 ﻿using DreamDay.BLL.Services.Interfaces;
 using DreamDay.Models.Entities;
 using DreamDay.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace DreamDay.UI.Controllers
         }
 
         [HttpGet("")]
+        [Authorize(Policy = "UserOrAdmin")]
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetAllUsersAsync();
@@ -94,6 +96,7 @@ namespace DreamDay.UI.Controllers
         }
 
         [HttpGet("delete/{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -103,6 +106,7 @@ namespace DreamDay.UI.Controllers
 
         [HttpPost("delete/{id:int}")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _userService.DeleteUserAsync(id);

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using DreamDay.UI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DreamDay.UI.Controllers
 {
