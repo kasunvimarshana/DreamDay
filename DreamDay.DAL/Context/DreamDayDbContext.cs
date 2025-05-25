@@ -12,6 +12,6 @@ namespace DreamDay.DAL.Context
     {
         public DreamDayDbContext(DbContextOptions<DreamDayDbContext> options) : base(options) { }
 
-        // public DbSet<User> Users { get; set; }
+         public DbSet<User> Users { get; set; }
     }
 }
