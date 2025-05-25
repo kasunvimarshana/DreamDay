@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DreamDay.Models\DreamDay.Models.csproj" />
+  </ItemGroup>
+
 </Project>
