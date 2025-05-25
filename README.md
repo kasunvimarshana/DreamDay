@@ -24,3 +24,5 @@ dotnet add DreamDay.UI package Microsoft.EntityFrameworkCore.Design
 ## push force
 git push origin <branch-name> --force
 
+dotnet add DreamDay.BLL package MailKit
+dotnet remove DreamDay.BLL package MailKit
