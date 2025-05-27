@@ -1,0 +1,33 @@
+﻿@using DreamDay.Models.Entities
+@using System.Globalization
+@model IEnumerable<Venue>
+
+<h2>Venues</h2>
+<p><a asp-action="Create" class="btn btn-primary">Create New</a></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Capacity</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var venue in Model)
+        {
+            <tr>
+                <td>@venue.Name</td>
+                <td>@venue.Location</td>
+                <td>@venue.Capacity.ToString()</td>
+                <td>@venue.Price.ToString("C", CultureInfo.CreateSpecificCulture("en-LK"))</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@venue.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@venue.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@venue.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
