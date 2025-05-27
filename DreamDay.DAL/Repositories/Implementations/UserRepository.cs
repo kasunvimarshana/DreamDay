@@ -39,7 +39,10 @@ namespace DreamDay.DAL.Repositories.Implementations
         public async Task DeleteAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
-            if (user == null) return;
+            if (user == null)
+            {
+                return;
+            }
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
