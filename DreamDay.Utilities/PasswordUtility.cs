@@ -19,7 +19,9 @@ namespace DreamDay.Utilities
         public static string HashPassword(string password)
         {
             if (string.IsNullOrEmpty(password))
+            {
                 throw new ArgumentException("Password cannot be empty", nameof(password));
+            }
 
             using var rng = RandomNumberGenerator.Create();
             byte[] salt = new byte[SaltSize];
@@ -43,13 +45,21 @@ namespace DreamDay.Utilities
         /// <returns>True if verified; otherwise, false</returns>
         public static bool VerifyPassword(string password, string hashedPassword)
         {
-            if (string.IsNullOrEmpty(password)) return false;
-            if (string.IsNullOrEmpty(hashedPassword)) return false;
+            if (string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+            if (string.IsNullOrEmpty(hashedPassword))
+            {
+                return false;
+            }
 
             byte[] hashBytes = Convert.FromBase64String(hashedPassword);
 
             if (hashBytes.Length != SaltSize + KeySize)
+            {
                 return false;
+            }
 
             var salt = new byte[SaltSize];
             Buffer.BlockCopy(hashBytes, 0, salt, 0, SaltSize);
@@ -60,7 +70,9 @@ namespace DreamDay.Utilities
             for (int i = 0; i < KeySize; i++)
             {
                 if (hashBytes[i + SaltSize] != key[i])
+                {
                     return false;
+                }
             }
             return true;
         }
