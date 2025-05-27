@@ -41,9 +41,18 @@ namespace DreamDay.BLL.Services.Implementations
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
-            if (string.IsNullOrWhiteSpace(to)) throw new ArgumentException("Recipient is required", nameof(to));
-            if (string.IsNullOrWhiteSpace(subject)) throw new ArgumentException("Subject is required", nameof(subject));
-            if (string.IsNullOrWhiteSpace(body)) throw new ArgumentException("Body is required", nameof(body));
+            if (string.IsNullOrWhiteSpace(to))
+            {
+                throw new ArgumentException("Recipient is required", nameof(to));
+            }
+            if (string.IsNullOrWhiteSpace(subject))
+            {
+                throw new ArgumentException("Subject is required", nameof(subject));
+            }
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                throw new ArgumentException("Body is required", nameof(body));
+            }
 
             using var mail = new MailMessage
             {
