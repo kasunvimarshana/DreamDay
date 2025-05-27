@@ -1,4 +1,5 @@
 ﻿using DreamDay.BLL.Services.Interfaces;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,18 @@ namespace DreamDay.BLL.Services.Implementations
 
         public async Task<string> SaveFileAsync(Stream fileStream, string originalFileName, CancellationToken cancellationToken = default)
         {
-            if (fileStream == null) throw new ArgumentNullException(nameof(fileStream));
-            if (string.IsNullOrWhiteSpace(originalFileName)) throw new ArgumentException("Invalid file name", nameof(originalFileName));
+            if (fileStream == null)
+            {
+                throw new ArgumentNullException(nameof(fileStream));
+            }
+            if (string.IsNullOrWhiteSpace(originalFileName))
+            {
+                throw new ArgumentException("Invalid file name", nameof(originalFileName));
+            }
             if (!_validator.IsValid(originalFileName, fileStream))
+            {
                 throw new InvalidOperationException("File validation failed.");
+            }
 
             string fileName = _fileNamer.GenerateFileName(originalFileName);
             return await _storageProvider.SaveAsync(fileStream, fileName, cancellationToken);
@@ -33,14 +42,25 @@ namespace DreamDay.BLL.Services.Implementations
 
         public async Task<bool> DeleteFileAsync(string filePath, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("Invalid file path", nameof(filePath));
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentException("Invalid file path", nameof(filePath));
+            }
             return await _storageProvider.DeleteAsync(filePath, cancellationToken);
         }
 
         public async Task<Stream> GetFileAsync(string filePath, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("Invalid file path", nameof(filePath));
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentException("Invalid file path", nameof(filePath));
+            }
             return await _storageProvider.GetAsync(filePath, cancellationToken);
+        }
+
+        public string GetFileUrl(string relativePath)
+        {
+            return $"/{relativePath.Replace("\\", "/")}";
         }
     }
 

@@ -9,29 +9,36 @@ namespace DreamDay.BLL.Services.Implementations
 {
     public class LocalStorageProviderService : IStorageProviderService
     {
-        private readonly string _basePath;
+        private readonly string _physicalBasePath;
+        private readonly string _webBasePath;
 
-        public LocalStorageProviderService(string basePath)
+        public LocalStorageProviderService(string physicalBasePath, string webBasePath = "uploads")
         {
-            _basePath = basePath;
+            _physicalBasePath = physicalBasePath;
+            _webBasePath = webBasePath;
+            //Directory.CreateDirectory(_physicalBasePath); // Ensure directory exists
         }
 
         public async Task<string> SaveAsync(Stream fileStream, string fileName, CancellationToken cancellationToken)
         {
-            string fullPath = Path.Combine(_basePath, fileName);
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+            string fullPhysicalPath = Path.Combine(_physicalBasePath, fileName);
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPhysicalPath)!);
 
-            using var fileStreamOutput = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+            using var fileStreamOutput = new FileStream(fullPhysicalPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
             await fileStream.CopyToAsync(fileStreamOutput, 81920, cancellationToken);
 
-            return fullPath;
+            // Return web-relative path instead of full physical path
+            return Path.Combine(_webBasePath, fileName).Replace('\\', '/');
         }
 
         public Task<bool> DeleteAsync(string filePath, CancellationToken cancellationToken)
         {
-            if (File.Exists(filePath))
+            // Convert web path back to physical path for deletion
+            string physicalPath = ConvertWebPathToPhysicalPath(filePath);
+
+            if (File.Exists(physicalPath))
             {
-                File.Delete(filePath);
+                File.Delete(physicalPath);
                 return Task.FromResult(true);
             }
             return Task.FromResult(false);
@@ -39,11 +46,31 @@ namespace DreamDay.BLL.Services.Implementations
 
         public Task<Stream> GetAsync(string filePath, CancellationToken cancellationToken)
         {
-            if (!File.Exists(filePath))
-                throw new FileNotFoundException("File not found", filePath);
+            // Convert web path back to physical path for reading
+            string physicalPath = ConvertWebPathToPhysicalPath(filePath);
 
-            Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            if (!File.Exists(physicalPath))
+            {
+                throw new FileNotFoundException("File not found", physicalPath);
+            }
+
+            Stream stream = new FileStream(physicalPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             return Task.FromResult(stream);
+        }
+
+        private string ConvertWebPathToPhysicalPath(string webPath)
+        {
+            // Handle both forward and back slashes, and remove leading slash if present
+            string normalizedPath = webPath.Replace('/', Path.DirectorySeparatorChar);
+            if (normalizedPath.StartsWith(_webBasePath))
+            {
+                // Extract just the filename part
+                string fileName = normalizedPath.Substring(_webBasePath.Length).TrimStart(Path.DirectorySeparatorChar);
+                return Path.Combine(_physicalBasePath, fileName);
+            }
+
+            // Fallback: assume it's already a physical path or just a filename
+            return Path.IsPathRooted(webPath) ? webPath : Path.Combine(_physicalBasePath, webPath);
         }
     }
 }
