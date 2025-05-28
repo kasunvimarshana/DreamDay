@@ -1,11 +1,11 @@
-﻿@model IEnumerable<DreamDay.Models.Entities.User>
+﻿@using DreamDay.Models.Entities
+@model IEnumerable<User>
 
 @{
     ViewData["Title"] = "Users List";
 }
 
-<h1>Users</h1>
-
+<h1>@ViewData["Title"]</h1>
 <p>
     <a asp-controller="Users" asp-action="Create" class="btn btn-primary">Create New User</a>
 </p>
@@ -17,7 +17,7 @@
             <th>Email</th>
             <th>Role</th>
             <th>Created At (UTC)</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>

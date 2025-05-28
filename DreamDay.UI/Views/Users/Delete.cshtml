@@ -1,12 +1,12 @@
-﻿@model DreamDay.Models.Entities.User
+﻿@using DreamDay.Models.Entities
+@model User
 
 @{
     ViewData["Title"] = "Delete User";
 }
 
-<h1>Delete User</h1>
-
-<h3>Are you sure you want to delete this user?</h3>
+<h1>@ViewData["Title"]</h1>
+<h2>Are you sure you want to delete this user?</h2>
 
 <div>
     <dl class="row">

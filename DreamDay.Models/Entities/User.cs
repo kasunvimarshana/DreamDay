@@ -13,6 +13,7 @@ namespace DreamDay.Models.Entities
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = "User";
+        public string? ImagePath { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public string? PasswordResetToken { get; set; }

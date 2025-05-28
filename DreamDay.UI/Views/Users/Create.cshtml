@@ -1,12 +1,13 @@
-﻿@model DreamDay.Models.ViewModels.UserViewModel
+﻿@using DreamDay.Models.ViewModels
+@model UserViewModel
 
 @{
     ViewData["Title"] = "Create User";
 }
 
-<h1>Create User</h1>
+<h1>@ViewData["Title"]</h1>
 
-<form asp-action="Create" method="post">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="form-group mb-3">
@@ -33,12 +34,83 @@
         <span asp-validation-for="Role" class="text-danger"></span>
     </div>
 
+    <div class="form-group mb-3">
+        <label asp-for="ImageFile" class="form-label">Upload Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
+
+@* <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageInput = document.getElementById('imageFile');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImage = document.getElementById('previewImage');
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+
+            if (file) {
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Please select a valid image file (JPG, PNG, GIF, or BMP)');
+                    imageInput.value = '';
+                    imagePreview.style.display = 'none';
+                    return;
+                }
+
+                // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+                const maxSize = 5 * 1024 * 1024;
+                if (file.size > maxSize) {
+                    alert('File size must be less than 5MB');
+                    imageInput.value = '';
+                    imagePreview.style.display = 'none';
+                    return;
+                }
+
+                // Create file reader
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.style.display = 'none';
+            }
+        });
+
+        // Form validation enhancement
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            // Additional client-side validation can be added here
+            const requiredFields = form.querySelectorAll('[data-val-required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+</script> *@
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+

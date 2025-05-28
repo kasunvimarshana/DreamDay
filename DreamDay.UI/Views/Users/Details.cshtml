@@ -1,10 +1,11 @@
-﻿@model DreamDay.Models.Entities.User
+﻿@using DreamDay.Models.Entities
+@model User
 
 @{
     ViewData["Title"] = "User Details";
 }
 
-<h1>User Details</h1>
+<h1>@ViewData["Title"]</h1>
 
 <div>
     <dl class="row">
@@ -19,6 +20,14 @@
 
         <dt class="col-sm-2">Created At (UTC)</dt>
         <dd class="col-sm-10">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+        {
+            <dt class="col-sm-2">Image</dt>
+            <dd class="col-sm-10">
+                <img src="~/@Url.Content(Model.ImagePath)" class="img-thumbnail" style="max-height:300px" />
+            </dd>
+        }
     </dl>
 </div>
 

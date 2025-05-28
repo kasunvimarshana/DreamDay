@@ -3,6 +3,7 @@ using DreamDay.Models.Entities;
 using DreamDay.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace DreamDay.UI.Controllers
@@ -11,9 +12,13 @@ namespace DreamDay.UI.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly IFileHandlerService _fileHandlerService;
+        private readonly IWebHostEnvironment _env;
+        public UsersController(IUserService userService, IFileHandlerService fileHandlerService, IWebHostEnvironment env)
         {
             _userService = userService;
+            _fileHandlerService = fileHandlerService;
+            _env = env;
         }
 
         [HttpGet("")]
@@ -47,12 +52,28 @@ namespace DreamDay.UI.Controllers
                 return View(vm);
             }
 
+            string? filePath = null;
+            if (vm.ImageFile != null)
+            {
+                try
+                {
+                    using var stream = vm.ImageFile.OpenReadStream();
+                    filePath = await _fileHandlerService.SaveFileAsync(stream, vm.ImageFile.FileName);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    ModelState.AddModelError("ImageFile", ex.Message);
+                    return View(vm);
+                }
+            }
+
             var user = new User
             {
                 FullName = vm.FullName,
                 Email = vm.Email,
                 Password = vm.Password,
                 Role = string.IsNullOrEmpty(vm.Role) ? "User" : vm.Role,
+                ImagePath = filePath,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -75,7 +96,8 @@ namespace DreamDay.UI.Controllers
                 FullName = user.FullName,
                 Email = user.Email,
                 Role = user.Role,
-                Password = string.Empty // Do not populate password in edit view for security
+                Password = string.Empty, // Do not populate password in edit view for security
+                ImagePath = user.ImagePath
             };
             return View(vm);
         }
@@ -100,13 +122,33 @@ namespace DreamDay.UI.Controllers
                 return NotFound();
             }
 
+            if (vm.ImageFile != null)
+            {
+                try
+                {
+                    // Delete old image if it exists
+                    if (!string.IsNullOrWhiteSpace(vm.ImagePath))
+                    {
+                        await _fileHandlerService.DeleteFileAsync(vm.ImagePath);
+                    }
+
+                    // Save new image
+                    using var stream = vm.ImageFile.OpenReadStream();
+                    user.ImagePath = await _fileHandlerService.SaveFileAsync(stream, vm.ImageFile.FileName);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    ModelState.AddModelError("ImageFile", ex.Message);
+                    return View(vm);
+                }
+            }
+
             user.FullName = vm.FullName;
             user.Email = vm.Email;
-            //if (!string.IsNullOrWhiteSpace(vm.Password))
-            //{
-            //    user.Password = vm.Password;
-            //}
-            user.Password = vm.Password;
+            if (!string.IsNullOrWhiteSpace(vm.Password))
+            {
+                user.Password = vm.Password;
+            }
             user.Role = string.IsNullOrEmpty(vm.Role) ? user.Role : vm.Role;
 
             await _userService.UpdateUserAsync(user);
@@ -130,6 +172,19 @@ namespace DreamDay.UI.Controllers
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user != null && !string.IsNullOrWhiteSpace(user.ImagePath))
+            {
+                try
+                {
+                    await _fileHandlerService.DeleteFileAsync(user.ImagePath);
+                }
+                catch (Exception)
+                {
+                    // Log the error but don't fail the deletion
+                }
+            }
+
             await _userService.DeleteUserAsync(id);
             return RedirectToAction(nameof(Index));
         }
