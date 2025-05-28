@@ -30,6 +30,18 @@ namespace DreamDay.DAL.Context
                 .HasForeignKey(u => u.TenantId)
                 .IsRequired(false); // Makes TenantId optional
 
+            //modelBuilder.Entity<Venue>()
+            //    .HasOne(v => v.Tenant)
+            //    .WithMany(t => t.Venues)
+            //    .HasForeignKey(v => v.TenantId)
+            //    .IsRequired(false); // Makes TenantId optional
+
+            //modelBuilder.Entity<Vendor>()
+            //    .HasOne(v => v.Tenant)
+            //    .WithMany(t => t.Vendors)
+            //    .HasForeignKey(v => v.TenantId)
+            //    .IsRequired(false); // Makes TenantId optional
+
             modelBuilder.Entity<Wedding>()
                 .HasOne(w => w.User)
                 .WithMany(u => u.Weddings)
