@@ -23,7 +23,7 @@
     <dd class="col-sm-10">@Model.Price.ToString("C", CultureInfo.CreateSpecificCulture("en-LK"))</dd>
 </dl>
 
-<form asp-action="DeleteConfirmed">
+<form asp-action="Delete" method="post">
     <input type="hidden" asp-for="Id" />
     <button type="submit" class="btn btn-danger">Delete</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
