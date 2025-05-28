@@ -8,6 +8,7 @@ namespace DreamDay.Models.Entities
 {
     public class Vendor
     {
+        public int? TenantId { get; set; }
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string ContactEmail { get; set; } = string.Empty;
@@ -15,6 +16,8 @@ namespace DreamDay.Models.Entities
         public string Description { get; set; } = string.Empty;
         public string ImagePath { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public Tenant? Tenant { get; set; }
     }
 
 }
