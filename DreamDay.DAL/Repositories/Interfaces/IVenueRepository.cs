@@ -12,8 +12,8 @@ namespace DreamDay.DAL.Repositories.Interfaces
     {
         Task<IEnumerable<Venue>> GetAllAsync();
         Task<Venue?> GetByIdAsync(int id);
-        Task AddAsync(Venue user);
-        Task UpdateAsync(Venue user);
+        Task AddAsync(Venue venue);
+        Task UpdateAsync(Venue venue);
         Task DeleteAsync(int id);
         Task<Venue?> GetByConditionAsync(Expression<Func<Venue, bool>> predicate);
     }

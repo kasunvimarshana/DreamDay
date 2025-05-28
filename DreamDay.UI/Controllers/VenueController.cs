@@ -67,7 +67,8 @@ namespace DreamDay.UI.Controllers
                 Capacity = model.Capacity,
                 Price = model.Price,
                 Description = model.Description,
-                ImagePath = filePath
+                ImagePath = filePath,
+                CreatedAt = DateTime.UtcNow
             };
 
             await _venueService.CreateVenueAsync(venue);
@@ -98,8 +99,13 @@ namespace DreamDay.UI.Controllers
 
         [HttpPost("edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(VenueViewModel model)
+        public async Task<IActionResult> Edit(int id, VenueViewModel model)
         {
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);

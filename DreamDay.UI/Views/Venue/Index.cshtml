@@ -2,15 +2,23 @@
 @using System.Globalization
 @model IEnumerable<Venue>
 
-<h2>Venues</h2>
-<p><a asp-action="Create" class="btn btn-primary">Create New</a></p>
-<table class="table">
+@{
+    ViewData["Title"] = "Venues List";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>
+    <a asp-controller="Venues" asp-action="Create" class="btn btn-primary">Create New Venue</a>
+</p>
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Name</th>
             <th>Location</th>
             <th>Capacity</th>
             <th>Price</th>
+            <th>Created At (UTC)</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -22,10 +30,11 @@
                 <td>@venue.Location</td>
                 <td>@venue.Capacity.ToString()</td>
                 <td>@venue.Price.ToString("C", CultureInfo.CreateSpecificCulture("en-LK"))</td>
+                <td>@venue.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@venue.Id">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@venue.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@venue.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@venue.Id" class="btn btn-info btn-sm">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@venue.Id" class="btn btn-warning btn-sm">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@venue.Id" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
         }

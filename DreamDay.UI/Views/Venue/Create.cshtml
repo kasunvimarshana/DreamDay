@@ -5,35 +5,42 @@
     ViewData["Title"] = "Create Venue";
 }
 
-<h2>Create Venue</h2>
-<form asp-action="Create" enctype="multipart/form-data">
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Name"></label>
+
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Location"></label>
+
+    <div class="form-group mb-3">
+        <label asp-for="Location" class="form-label"></label>
         <input asp-for="Location" class="form-control" />
         <span asp-validation-for="Location" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Capacity"></label>
+
+    <div class="form-group mb-3">
+        <label asp-for="Capacity" class="form-label"></label>
         <input asp-for="Capacity" class="form-control" />
         <span asp-validation-for="Capacity" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Price"></label>
+
+    <div class="form-group mb-3">
+        <label asp-for="Price" class="form-label"></label>
         <input asp-for="Price" class="form-control" />
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
+
+    <div class="form-group mb-3">
+        <label asp-for="Description" class="form-label"></label>
         <textarea asp-for="Description" class="form-control"></textarea>
     </div>
-    <div class="form-group">
-        <label asp-for="ImageFile">Upload Image</label>
+
+    <div class="form-group mb-3">
+        <label asp-for="ImageFile" class="form-label">Upload Image</label>
         <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
         <span asp-validation-for="ImageFile" class="text-danger"></span>
     </div>
@@ -105,3 +112,9 @@
         });
     });
 </script> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
