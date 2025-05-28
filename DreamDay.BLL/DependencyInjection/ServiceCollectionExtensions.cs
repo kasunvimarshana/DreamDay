@@ -20,6 +20,8 @@ namespace DreamDay.BLL.DependencyInjection
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IVenueService, VenueService>();
+            services.AddScoped<IVendorService, VendorService>();
+
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IFileHandlerService, FileHandlerService>();
             services.AddScoped<IFileValidatorService>(_ =>

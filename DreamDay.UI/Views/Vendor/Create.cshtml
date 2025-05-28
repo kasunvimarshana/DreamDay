@@ -1,0 +1,76 @@
+﻿@using DreamDay.Models.ViewModels
+@model VendorViewModel
+
+@{
+    ViewData["Title"] = "Create Vendor";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ContactEmail" class="form-label"></label>
+        <input asp-for="ContactEmail" class="form-control" />
+        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Category" class="form-label"></label>
+        <input asp-for="Category" class="form-control" />
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="ImageFile" class="form-label">Upload Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@* <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation enhancement
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            // Additional client-side validation can be added here
+            const requiredFields = form.querySelectorAll('[data-val-required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+</script> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
