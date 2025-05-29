@@ -21,7 +21,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 // Configure Entity Framework Core to use SQL Server
 builder.Services.AddDbContext<DreamDayDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
 #endregion
 

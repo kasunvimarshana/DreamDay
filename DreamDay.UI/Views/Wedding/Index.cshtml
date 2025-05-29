@@ -1,0 +1,41 @@
+﻿@using DreamDay.Models.Entities
+@model IEnumerable<Wedding>
+
+@{
+    ViewData["Title"] = "Weddings List";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>
+    <a asp-controller="Wedding" asp-action="Create" class="btn btn-primary">Create New Wedding</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Wedding Date (UTC)</th>
+            <th>Venue</th>
+            <th>Owner</th>
+            <th>Created At (UTC)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var wedding in Model)
+        {
+            <tr>
+                <td>@wedding.Title</td>
+                <td>@wedding.WeddingDate?.ToString("yyyy-MM-dd")</td>
+                <td>@wedding.Venue?.Name</td>
+                <td>@wedding.Owner?.FullName</td>
+                <td>@wedding.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@wedding.Id" class="btn btn-info btn-sm">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@wedding.Id" class="btn btn-warning btn-sm">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@wedding.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
