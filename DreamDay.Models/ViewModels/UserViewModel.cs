@@ -26,5 +26,13 @@ namespace DreamDay.Models.ViewModels
         [Display(Name = "Upload Image")]
         public IFormFile? ImageFile { get; set; }
         public string? ImagePath { get; set; }
+
+        public List<(string Value, string Text)> UserRoleOptions { get; set; } = new()
+        {
+            ("Admin", "Admin"),
+            ("Guest", "Guest"),
+            ("Planner", "Planner"),
+            ("Client", "Client")
+        };
     }
 }

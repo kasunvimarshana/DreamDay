@@ -41,7 +41,11 @@ namespace DreamDay.UI.Controllers
         }
 
         [HttpGet("create")]
-        public IActionResult Create() => View();
+        public async Task<IActionResult> Create()
+        {
+            var model = new UserViewModel();
+            return View(model);
+        }
 
         [HttpPost("create")]
         [ValidateAntiForgeryToken]
