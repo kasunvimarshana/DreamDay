@@ -32,7 +32,7 @@ namespace DreamDay.Models.ViewModels
             ("Admin", "Admin"),
             ("Guest", "Guest"),
             ("Planner", "Planner"),
-            ("Client", "Client")
+            //("Client", "Client")
         };
     }
 }
