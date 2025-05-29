@@ -1,9 +1,69 @@
-﻿@{
+﻿@using DreamDay.Models.ViewModels
+@model DashboardViewModel
+
+@{
     // var title = ViewContext.RouteData.Values["action"].ToString();
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Home</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Total Weddings</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.TotalWeddings</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Upcoming Weddings</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.UpcomingWeddings</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Total Venues</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.TotalVenues</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-header">Total Users</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.TotalUsers</h5>
+            </div>
+        </div>
+    </div>
 </div>
+
+<h2>Recent Weddings</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Wedding Date</th>
+            <th>Venue</th>
+            <th>Bride</th>
+            <th>Groom</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var wedding in Model.RecentWeddings)
+        {
+            <tr>
+                <td>@wedding.Title</td>
+                <td>@wedding.WeddingDate?.ToString("yyyy-MM-dd")</td>
+                <td>@wedding.Venue?.Name</td>
+                <td>@wedding.Bride?.FullName</td>
+                <td>@wedding.Groom?.FullName</td>
+            </tr>
+        }
+    </tbody>
+</table>
