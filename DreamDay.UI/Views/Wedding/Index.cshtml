@@ -32,12 +32,12 @@
                 <td>@wedding.Owner?.FullName</td>
                 <td>@wedding.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@wedding.Id" class="btn btn-info btn-sm">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@wedding.Id" class="btn btn-warning btn-sm">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@wedding.Id" class="btn btn-danger btn-sm">Delete</a> |
-                    <a asp-controller="WeddingChecklistItem" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm">View Checklist</a> |
-                    <a asp-controller="BudgetItem" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm">View Budget Items</a>
-                    <a asp-controller="Guest" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm">View Guests</a>
+                    <a asp-action="Details" asp-route-id="@wedding.Id" class="btn btn-info btn-sm m-1">Details</a>
+                    <a asp-action="Edit" asp-route-id="@wedding.Id" class="btn btn-warning btn-sm m-1">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@wedding.Id" class="btn btn-danger btn-sm m-1">Delete</a>
+                    <a asp-controller="WeddingChecklistItem" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm m-1">View Checklist</a>
+                    <a asp-controller="BudgetItem" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm m-1">View Budget Items</a>
+                    <a asp-controller="Guest" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm m-1">View Guests</a>
                 </td>
             </tr>
         }
