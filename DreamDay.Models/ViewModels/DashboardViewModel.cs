@@ -13,9 +13,24 @@ namespace DreamDay.Models.ViewModels
     {
         public int TotalWeddings { get; set; }
         public int UpcomingWeddings { get; set; }
-        public int TotalVenues { get; set; }
-        public int TotalUsers { get; set; }
-        public List<Wedding> RecentWeddings { get; set; }
+        public int PastWeddings { get; set; }
+        public int TotalChecklistItems { get; set; }
+        public int CompletedChecklistItems { get; set; }
+        public int PendingChecklistItems { get; set; }
+        public int OverdueChecklistItems { get; set; }
+        public decimal TotalBudgetEstimated { get; set; }
+        public decimal TotalBudgetActual { get; set; }
+        public decimal TotalBudgetPaid { get; set; }
+        public decimal BudgetVariance { get; set; }
+        public int TotalBudgetItems { get; set; }
+        public int PaidBudgetItems { get; set; }
+        public int UnpaidBudgetItems { get; set; }
+
+        public List<RecentWeddingViewModel> RecentWeddings { get; set; } = new();
+        public List<UpcomingChecklistItemViewModel> UpcomingTasks { get; set; } = new();
+        public List<BudgetCategoryViewModel> BudgetByCategory { get; set; } = new();
+        public List<MonthlyBudgetViewModel> MonthlyBudgetTrend { get; set; } = new();
+        public List<WeddingProgressViewModel> WeddingProgress { get; set; } = new();
     }
 
 }

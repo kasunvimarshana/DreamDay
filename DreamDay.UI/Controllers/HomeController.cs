@@ -11,36 +11,20 @@ namespace DreamDay.UI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IWeddingService _weddingService;
-        private readonly IVenueService _venueService;
-        private readonly IUserService _userService;
+        private readonly IDashboardService _dashboardService;
 
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IWeddingService weddingService, IVenueService venueService, IUserService userService)
+        public HomeController(ILogger<HomeController> logger, IDashboardService dashboardService)
         {
             _logger = logger;
-            _weddingService = weddingService;
-            _venueService = venueService;
-            _userService = userService;
+            _dashboardService = dashboardService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var weddings = await _weddingService.GetAllWeddingsAsync();
-            var upcomingWeddings = weddings.Where(w => w.WeddingDate >= DateTime.Today).ToList();
-            var recentWeddings = weddings.OrderByDescending(w => w.CreatedAt).Take(5).ToList();
-
-            var model = new DashboardViewModel
-            {
-                TotalWeddings = weddings.Count(),
-                UpcomingWeddings = upcomingWeddings.Count,
-                TotalVenues = (await _venueService.GetAllVenuesAsync()).Count(),
-                TotalUsers = (await _userService.GetAllUsersAsync()).Count(),
-                RecentWeddings = recentWeddings
-            };
-
-            return View(model);
+            var dashboardData = await _dashboardService.GetDashboardDataAsync();
+            return View(dashboardData);
         }
 
         public IActionResult Privacy()
