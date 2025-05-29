@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,9 @@ namespace DreamDay.DAL.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            // Automatically apply all IEntityTypeConfiguration<T> classes from the assembly
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(DreamDayDbContext).Assembly);
+
             // **TENANT RELATIONSHIPS**
             // Tenant -> Users (One-to-Many)
             modelBuilder.Entity<Tenant>()
@@ -38,17 +42,24 @@ namespace DreamDay.DAL.Context
                 .OnDelete(DeleteBehavior.Restrict);
 
             // **USER RELATIONSHIPS**
-            // User -> Weddings (One-to-Many as Owner)
+            // User -> Weddings (One-to-Many as Bride)
             modelBuilder.Entity<User>()
-                .HasMany(u => u.Weddings)
-                .WithOne(w => w.Owner)
-                .HasForeignKey(w => w.OwnerId)
+                .HasMany(u => u.BrideOfWeddings)
+                .WithOne(w => w.Bride)
+                .HasForeignKey(w => w.BrideId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // User -> Weddings (One-to-Many as Groom)
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.GroomOfWeddings)
+                .WithOne(w => w.Groom)
+                .HasForeignKey(w => w.GroomId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // User -> User (Self-referencing for CreatedBy)
             modelBuilder.Entity<User>()
                 .HasOne(u => u.CreatedBy)
-                .WithMany()
+                .WithMany(u => u.CreatedUsers)
                 .HasForeignKey(u => u.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -99,7 +110,7 @@ namespace DreamDay.DAL.Context
 
             // User -> Weddings (One-to-Many as Creator)
             modelBuilder.Entity<User>()
-                .HasMany<Wedding>()
+                .HasMany(u => u.CreatedWeddings)
                 .WithOne(w => w.CreatedBy)
                 .HasForeignKey(w => w.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -278,7 +289,10 @@ namespace DreamDay.DAL.Context
 
             // Foreign key indexes
             modelBuilder.Entity<Wedding>()
-                .HasIndex(w => w.OwnerId);
+                .HasIndex(w => w.BrideId);
+
+            modelBuilder.Entity<Wedding>()
+                .HasIndex(w => w.GroomId);
 
             modelBuilder.Entity<Wedding>()
                 .HasIndex(w => w.VenueId);

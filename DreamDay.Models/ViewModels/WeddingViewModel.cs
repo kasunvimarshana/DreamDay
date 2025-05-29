@@ -24,8 +24,16 @@ namespace DreamDay.Models.ViewModels
         [Display(Name = "Venue")]
         public int VenueId { get; set; }
 
+        //[Required]
+        //[Display(Name = "Owner")]
+        //public int OwnerId { get; set; }
+
         [Required]
-        [Display(Name = "Owner")]
-        public int OwnerId { get; set; }
+        [Display(Name = "Bride")]
+        public int BrideId { get; set; }
+
+        [Required]
+        [Display(Name = "Groom")]
+        public int GroomId { get; set; }
     }
 }

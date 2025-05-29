@@ -25,7 +25,9 @@ namespace DreamDay.DAL.Repositories.Implementations
             return await _context.Weddings
                 //.AsNoTracking()
                 .Include(w => w.Venue)
-                .Include(w => w.Owner)
+                //.Include(w => w.Owner)
+                .Include(w => w.Bride)
+                .Include(w => w.Groom)
                 .ToListAsync();
         }
 
@@ -34,7 +36,9 @@ namespace DreamDay.DAL.Repositories.Implementations
             return await _context.Weddings
                 //.AsNoTracking()
                 .Include(w => w.Venue)
-                .Include(w => w.Owner)
+                //.Include(w => w.Owner)
+                .Include(w => w.Bride)
+                .Include(w => w.Groom)
                 .FirstOrDefaultAsync(w => w.Id == id);
         }
 

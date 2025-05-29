@@ -17,7 +17,9 @@ namespace DreamDay.Models.Entities
         [DataType(DataType.Date)]
         public DateTime? WeddingDate { get; set; }
         //public string? Location { get; set; } = string.Empty;
-        public int? OwnerId { get; set; }
+        //public int? OwnerId { get; set; }
+        public int? BrideId { get; set; }
+        public int? GroomId { get; set; }
         public int? VenueId { get; set; }
         public int? CreatedByUserId { get; set; }
         [DataType(DataType.Date)]
@@ -25,7 +27,9 @@ namespace DreamDay.Models.Entities
 
 
         public Tenant? Tenant { get; set; }
-        public User? Owner { get; set; }
+        //public User? Owner { get; set; }
+        public User? Bride { get; set; }
+        public User? Groom { get; set; }
         public Venue? Venue { get; set; }
         public ICollection<WeddingChecklistItem> WeddingChecklistItems { get; set; } = new List<WeddingChecklistItem>();
         public ICollection<Guest> Guests { get; set; } = new List<Guest>();
@@ -33,6 +37,7 @@ namespace DreamDay.Models.Entities
         public ICollection<TimelineEvent> TimelineEvents { get; set; } = new List<TimelineEvent>();
         public ICollection<WeddingVendor> WeddingVendors { get; set; } = new List<WeddingVendor>();
         public ICollection<PlannerWedding> PlannerWeddings { get; set; } = new List<PlannerWedding>();
+
         public User? CreatedBy { get; set; }
     }
 

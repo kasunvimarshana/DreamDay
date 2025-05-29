@@ -62,7 +62,9 @@ namespace DreamDay.UI.Controllers
             {
                 Title = model.Title,
                 WeddingDate = model.WeddingDate,
-                OwnerId = model.OwnerId,
+                //OwnerId = model.OwnerId,
+                BrideId = model.BrideId,
+                GroomId = model.GroomId,
                 VenueId = model.VenueId,
                 CreatedAt = DateTime.UtcNow
             };
@@ -85,7 +87,9 @@ namespace DreamDay.UI.Controllers
                 Id = wedding.Id,
                 Title = wedding.Title,
                 WeddingDate = (DateTime) wedding.WeddingDate,
-                OwnerId = (int) wedding.OwnerId,
+                //OwnerId = (int) wedding.OwnerId,
+                BrideId = (int) wedding.BrideId,
+                GroomId = (int) wedding.GroomId,
                 VenueId = (int) wedding.VenueId
             };
 
@@ -116,7 +120,9 @@ namespace DreamDay.UI.Controllers
 
             wedding.Title = model.Title;
             wedding.WeddingDate = model.WeddingDate;
-            wedding.OwnerId = model.OwnerId;
+            //wedding.OwnerId = model.OwnerId;
+            wedding.BrideId = model.BrideId;
+            wedding.GroomId = model.GroomId;
             wedding.VenueId = model.VenueId;
 
             await _weddingService.UpdateWeddingAsync(wedding);
@@ -145,7 +151,7 @@ namespace DreamDay.UI.Controllers
             var owners = await _userService.GetAllUsersAsync();
 
             ViewBag.VenueId = new SelectList(venues, "Id", "Name");
-            ViewBag.OwnerId = new SelectList(owners, "Id", "FullName");
+            ViewBag.UserId = new SelectList(owners, "Id", "FullName");
         }
     }
 }

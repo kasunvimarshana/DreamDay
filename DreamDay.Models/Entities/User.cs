@@ -28,8 +28,12 @@ namespace DreamDay.Models.Entities
 
 
         public Tenant? Tenant { get; set; }
-        public ICollection<Wedding> Weddings { get; set; } = new List<Wedding>();
+        public ICollection<Wedding> CreatedWeddings { get; set; } = new List<Wedding>();
         public ICollection<PlannerWedding> PlannerWeddings { get; set; } = new List<PlannerWedding>();
+        public ICollection<Wedding> BrideOfWeddings { get; set; } = new List<Wedding>();
+        public ICollection<Wedding> GroomOfWeddings { get; set; } = new List<Wedding>();
+        public ICollection<User> CreatedUsers { get; set; } = new List<User>();
+
         public User? CreatedBy { get; set; }
     }
 }

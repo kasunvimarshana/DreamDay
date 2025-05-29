@@ -17,7 +17,8 @@
             <th>Title</th>
             <th>Wedding Date (UTC)</th>
             <th>Venue</th>
-            <th>Owner</th>
+            <th>Bride</th>
+            <th>Groom</th>
             <th>Created At (UTC)</th>
             <th>Actions</th>
         </tr>
@@ -29,7 +30,8 @@
                 <td>@wedding.Title</td>
                 <td>@wedding.WeddingDate?.ToString("yyyy-MM-dd")</td>
                 <td>@wedding.Venue?.Name</td>
-                <td>@wedding.Owner?.FullName</td>
+                <td>@wedding.Bride?.FullName</td>
+                <td>@wedding.Groom?.FullName</td>
                 <td>@wedding.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@wedding.Id" class="btn btn-info btn-sm m-1">Details</a>
