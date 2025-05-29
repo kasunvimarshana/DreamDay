@@ -23,6 +23,7 @@ namespace DreamDay.BLL.DependencyInjection
             services.AddScoped<IVendorService, VendorService>();
             services.AddScoped<IWeddingService, WeddingService>();
             services.AddScoped<IWeddingChecklistItemService, WeddingChecklistItemService>();
+            services.AddScoped<IBudgetItemService, BudgetItemService>();
 
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IFileHandlerService, FileHandlerService>();

@@ -1,0 +1,82 @@
+﻿@using DreamDay.Models.Entities
+@using System.Globalization
+@model IEnumerable<BudgetItem>
+
+@{
+    // var title = ViewContext.RouteData.Values["action"].ToString();
+    ViewData["Title"] = "Budget Items List";
+    int weddingId = (int) ViewBag.WeddingId;
+    var totalEstimated = Model.Sum(b => b.EstimatedCost);
+    var totalActual = Model.Where(b => b.ActualCost.HasValue).Sum(b => b.ActualCost.Value);
+    var totalPaid = Model.Where(b => b.IsPaid && b.ActualCost.HasValue).Sum(b => b.ActualCost.Value);
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Estimated</h5>
+                <h4>@totalEstimated.ToString("C", CultureInfo.CreateSpecificCulture("en-LK"))</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Actual</h5>
+                <h4>@totalActual.ToString("C", CultureInfo.CreateSpecificCulture("en-LK"))</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Paid</h5>
+                <h4>@totalPaid.ToString("C", CultureInfo.CreateSpecificCulture("en-LK"))</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    <a asp-controller="BudgetItem" asp-action="Create" asp-route-weddingId="@weddingId" class="btn btn-primary">Create New Budget Item</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Item</th>
+            <th>Estimated Cost</th>
+            <th>Actual Cost</th>
+            <th>Is Paid</th>
+            <th>Payment Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var budgetItem in Model)
+        {
+            <tr class="@(budgetItem.IsPaid ? "table-success" : "")">
+                <td>@budgetItem.Category</td>
+                <td>@budgetItem.Item</td>
+                <td>@budgetItem.EstimatedCost.ToString("C", CultureInfo.CreateSpecificCulture("en-LK"))</td>
+                <td>@(budgetItem.ActualCost?.ToString("C", CultureInfo.CreateSpecificCulture("en-LK")) ?? "N/A")</td>
+                <td>
+                    <form asp-action="TogglePaid" asp-route-weddingId="@budgetItem.WeddingId" asp-route-id="@budgetItem.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <input type="checkbox" onchange="this.form.submit()" @(budgetItem.IsPaid ? "checked" : "") />
+                    </form>
+                </td>
+                <td>@budgetItem.PaymentDate?.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <a asp-action="Details" asp-route-weddingId="@budgetItem.WeddingId" asp-route-id="@budgetItem.Id" class="btn btn-info btn-sm">Details</a> |
+                    <a asp-action="Edit" asp-route-weddingId="@budgetItem.WeddingId" asp-route-id="@budgetItem.Id" class="btn btn-warning btn-sm">Edit</a> |
+                    <a asp-action="Delete" asp-route-weddingId="@budgetItem.WeddingId" asp-route-id="@budgetItem.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

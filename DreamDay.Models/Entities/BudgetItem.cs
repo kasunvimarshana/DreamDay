@@ -13,17 +13,22 @@ namespace DreamDay.Models.Entities
     {
         public int? TenantId { get; set; }
         public int Id { get; set; }
+
         [Required]
-        public string Title { get; set; } = string.Empty;
+        public string Item { get; set; } = string.Empty;
+        public string? Category { get; set; } = string.Empty;
         //[DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal EstimatedAmount { get; set; } = 0.00m;
+        public decimal EstimatedCost { get; set; } = 0.00m;
         //[DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal PaidAmount { get; set; } = 0.00m;
+        public decimal? ActualCost { get; set; } = 0.00m;
+        public bool IsPaid { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? PaymentDate { get; set; }
+        public string? Notes { get; set; }
         [Required]
         public int WeddingId { get; set; }
-        [DataType(DataType.Date)]
         public int? CreatedByUserId { get; set; }
         [DataType(DataType.Date)]
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
