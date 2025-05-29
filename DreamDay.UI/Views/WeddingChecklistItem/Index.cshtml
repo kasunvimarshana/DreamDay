@@ -1,0 +1,46 @@
+﻿@using DreamDay.Models.Entities
+@model IEnumerable<WeddingChecklistItem>
+
+@{
+    // var title = ViewContext.RouteData.Values["action"].ToString();
+    ViewData["Title"] = "Wedding Checklist Items List";
+    int weddingId = (int) ViewBag.WeddingId;
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>
+    <a asp-controller="WeddingChecklistItem" asp-action="Create" asp-route-weddingId="@weddingId" class="btn btn-primary">Create New Wedding Checklist Item</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>Due Date (UTC)</th>
+            <th>Is Completed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var weddingChecklistItem in Model)
+        {
+            <tr>
+                <td>@weddingChecklistItem.Task</td>
+                <td>@weddingChecklistItem.DueDate?.ToString("yyyy-MM-dd")</td>
+                @* <td>@(weddingChecklistItem.IsCompleted ? "Yes" : "No")</td> *@
+                <td>
+                    <form asp-action="ToggleCompleted" asp-route-weddingId="@weddingChecklistItem.WeddingId" asp-route-id="@weddingChecklistItem.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <input type="checkbox" onchange="this.form.submit()" @(weddingChecklistItem.IsCompleted ? "checked" : "") />
+                    </form>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-weddingId="@weddingChecklistItem.WeddingId" asp-route-id="@weddingChecklistItem.Id" class="btn btn-info btn-sm">Details</a> |
+                    <a asp-action="Edit" asp-route-weddingId="@weddingChecklistItem.WeddingId" asp-route-id="@weddingChecklistItem.Id" class="btn btn-warning btn-sm">Edit</a> |
+                    <a asp-action="Delete" asp-route-weddingId="@weddingChecklistItem.WeddingId" asp-route-id="@weddingChecklistItem.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

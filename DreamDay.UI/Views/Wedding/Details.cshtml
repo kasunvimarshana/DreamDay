@@ -2,6 +2,7 @@
 @model Wedding
 
 @{
+    // var title = ViewContext.RouteData.Values["action"].ToString();
     ViewData["Title"] = "Wedding Details";
 }
 
@@ -25,6 +26,16 @@
         <dd class="col-sm-10">@Model.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</dd>
     </dl>
 </div>
+
+<p>
+    <a asp-controller="WeddingChecklistItem"
+       asp-action="Index"
+       asp-route-weddingId="@Model.Id"
+       class="btn btn-outline-primary">
+        View Checklist
+    </a>
+</p>
+
 
 <p>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
