@@ -19,6 +19,7 @@ namespace DreamDay.DAL.DependencyInjection
             services.AddScoped<IWeddingRepository, WeddingRepository>();
             services.AddScoped<IWeddingChecklistItemRepository, WeddingChecklistItemRepository>();
             services.AddScoped<IBudgetItemRepository, BudgetItemRepository>();
+            services.AddScoped<IGuestRepository, GuestRepository>();
             return services;
         }
     }

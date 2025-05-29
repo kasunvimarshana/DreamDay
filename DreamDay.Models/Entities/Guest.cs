@@ -16,9 +16,14 @@ namespace DreamDay.Models.Entities
         public string FullName { get; set; } = string.Empty;
         public string? Email { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; } = string.Empty;
-        public bool RSVP { get; set; }
-        public string? MealPreference { get; set; } = string.Empty;
-        public bool IsAttending { get; set; }
+        public string RSVPStatus { get; set; } = "Pending"; // Pending, Accepted, Declined
+        public bool IsVIP { get; set; }
+        public string? DietaryRestrictions { get; set; } = string.Empty;
+        public string? Notes { get; set; } = string.Empty;
+        public int? PlusOne { get; set; } = 0; // Number of additional guests
+        public string? TableAssignment { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? RSVPDate { get; set; }
         [Required]
         public int WeddingId { get; set; }
         public int? CreatedByUserId { get; set; }

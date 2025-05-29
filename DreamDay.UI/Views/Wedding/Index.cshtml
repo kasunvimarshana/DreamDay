@@ -37,6 +37,7 @@
                     <a asp-action="Delete" asp-route-id="@wedding.Id" class="btn btn-danger btn-sm">Delete</a> |
                     <a asp-controller="WeddingChecklistItem" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm">View Checklist</a> |
                     <a asp-controller="BudgetItem" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm">View Budget Items</a>
+                    <a asp-controller="Guest" asp-action="Index" asp-route-weddingId="@wedding.Id" class="btn btn-primary btn-sm">View Guests</a>
                 </td>
             </tr>
         }

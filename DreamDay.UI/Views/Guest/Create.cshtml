@@ -1,0 +1,129 @@
+﻿@using DreamDay.Models.ViewModels
+@model GuestViewModel
+
+@{
+    // var title = ViewContext.RouteData.Values["action"].ToString();
+    ViewData["Title"] = "Add New Guest";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" asp-route-weddingId="@Model.WeddingId" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" type="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" type="tel" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group mb-3">
+                <label asp-for="RSVPStatus" class="form-label"></label>
+                <select asp-for="RSVPStatus" asp-items="@(Model.RSVPStatusOptions.Select(opt => new SelectListItem { Value = opt.Value, Text = opt.Text }))" class="form-control">
+                </select>
+                <span asp-validation-for="RSVPStatus" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group mb-3">
+                <label asp-for="PlusOne" class="form-label"></label>
+                <input asp-for="PlusOne" class="form-control" type="number" min="0" max="10" />
+                <span asp-validation-for="PlusOne" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group mb-3">
+                <label asp-for="TableAssignment" class="form-label"></label>
+                <input asp-for="TableAssignment" class="form-control" />
+                <span asp-validation-for="TableAssignment" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group form-check mb-3">
+                <input asp-for="IsVIP" class="form-check-input" type="checkbox" />
+                <label asp-for="IsVIP" class="form-check-label"></label>
+                <span asp-validation-for="IsVIP" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label asp-for="RSVPDate" class="form-label"></label>
+                <input asp-for="RSVPDate" class="form-control" type="date" />
+                <span asp-validation-for="RSVPDate" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="DietaryRestrictions" class="form-label"></label>
+        <textarea asp-for="DietaryRestrictions" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="DietaryRestrictions" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Guest</button>
+    <a asp-action="Index" asp-route-weddingId="@Model.WeddingId" class="btn btn-secondary">Cancel</a>
+</form>
+
+@* <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation enhancement
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            // Additional client-side validation can be added here
+            const requiredFields = form.querySelectorAll('[data-val-required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+</script> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

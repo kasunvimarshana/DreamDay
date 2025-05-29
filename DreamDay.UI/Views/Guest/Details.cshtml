@@ -1,0 +1,51 @@
+﻿@using DreamDay.Models.Entities
+@model Guest
+
+@{
+    // var title = ViewContext.RouteData.Values["action"].ToString();
+    ViewData["Title"] = "Guest Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">Full Name</dt>
+        <dd class="col-sm-10">@Model.FullName</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Phone Number</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+
+        <dt class="col-sm-2">RSVP Status</dt>
+        <dd class="col-sm-10">Model.RSVPStatus</dd>
+
+        <dt class="col-sm-2">Number of additional Guests</dt>
+        <dd class="col-sm-10">Model.PlusOne</dd>
+
+        <dt class="col-sm-2">Table Assignment</dt>
+        <dd class="col-sm-10">Model.TableAssignment</dd>
+
+        <dt class="col-sm-2">Is VIP</dt>
+        <dd class="col-sm-10">@(Model.IsVIP ? "Yes" : "No")</dd>
+
+        <dt class="col-sm-2">RSVP Date</dt>
+        <dd class="col-sm-10">@(Model.RSVPDate?.ToString("yyyy-MM-dd") ?? "N/A")</dd>
+
+        <dt class="col-sm-2">Dietary Restrictions</dt>
+        <dd class="col-sm-10">@(Model.DietaryRestrictions ?? "N/A")</dd>
+
+        <dt class="col-sm-2">Notes</dt>
+        <dd class="col-sm-10">@(Model.Notes ?? "N/A")</dd>
+
+        <dt class="col-sm-2">Created At (UTC)</dt>
+        <dd class="col-sm-10">@Model.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</dd>
+    </dl>
+</div>
+
+<p>
+    <a asp-action="Edit" asp-route-weddingId="@Model.WeddingId" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="Index" asp-route-weddingId="@Model.WeddingId" class="btn btn-secondary">Back to List</a>
+</p>

@@ -36,6 +36,24 @@
     </a>
 </p>
 
+<p>
+    <a asp-controller="BudgetItem"
+       asp-action="Index"
+       asp-route-weddingId="@Model.Id"
+       class="btn btn-outline-primary">
+        View Budget Items
+    </a>
+</p>
+
+<p>
+    <a asp-controller="Guest"
+       asp-action="Index"
+       asp-route-weddingId="@Model.Id"
+       class="btn btn-outline-primary">
+        View Guests
+    </a>
+</p>
+
 
 <p>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>

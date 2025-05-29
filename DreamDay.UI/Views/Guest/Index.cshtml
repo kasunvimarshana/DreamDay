@@ -1,0 +1,117 @@
+﻿@using DreamDay.Models.Entities
+@model IEnumerable<Guest>
+
+@{
+    // var title = ViewContext.RouteData.Values["action"].ToString();
+    ViewData["Title"] = "Guest List";
+    int weddingId = (int) ViewBag.WeddingId;
+    var rsvpStats = (Dictionary<string, int>) ViewBag.RSVPStats;
+    int totalGuestCount = (int) ViewBag.TotalGuestCount;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Invited</h5>
+                <h4>@rsvpStats["Total"]</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Accepted</h5>
+                <h4>@rsvpStats["Accepted"]</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5 class="card-title">Pending</h5>
+                <h4>@rsvpStats["Pending"]</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <h5 class="card-title">Declined</h5>
+                <h4>@rsvpStats["Declined"]</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="alert alert-info">
+            <strong>Total Expected Guests:</strong> @totalGuestCount (including plus ones)
+        </div>
+    </div>
+</div>
+
+<p>
+    <a asp-controller="Guest" asp-action="Create" asp-route-weddingId="@weddingId" class="btn btn-primary">Add New Guest</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>RSVP Status</th>
+            <th>Plus One</th>
+            <th>VIP</th>
+            <th>Table</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var guest in Model)
+        {
+            <tr class="@(guest.RSVPStatus == "Accepted" ? "table-success" : guest.RSVPStatus == "Declined" ? "table-danger" : "")">
+                <td>
+                    @guest.FullName
+                    @if (guest.IsVIP)
+                    {
+                        <span class="badge bg-warning text-dark">VIP</span>
+                    }
+                </td>
+                <td>@guest.Email</td>
+                <td>@guest.PhoneNumber</td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <form asp-action="UpdateRSVP" asp-route-weddingId="@guest.WeddingId" asp-route-id="@guest.Id" method="post" style="display:inline;" class="mx-1">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="status" value="Pending" />
+                            <button type="submit" class="btn @(guest.RSVPStatus == "Pending" ? "btn-warning" : "btn-outline-warning") btn-sm">Pending</button>
+                        </form>
+                        <form asp-action="UpdateRSVP" asp-route-weddingId="@guest.WeddingId" asp-route-id="@guest.Id" method="post" style="display:inline;" class="mx-1">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="status" value="Accepted" />
+                            <button type="submit" class="btn @(guest.RSVPStatus == "Accepted" ? "btn-success" : "btn-outline-success") btn-sm">Accepted</button>
+                        </form>
+                        <form asp-action="UpdateRSVP" asp-route-weddingId="@guest.WeddingId" asp-route-id="@guest.Id" method="post" style="display:inline;" class="mx-1">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="status" value="Declined" />
+                            <button type="submit" class="btn @(guest.RSVPStatus == "Declined" ? "btn-danger" : "btn-outline-danger") btn-sm">Declined</button>
+                        </form>
+                    </div>
+                </td>
+                <td>@(guest.PlusOne ?? 0)</td>
+                <td>@(guest.IsVIP ? "Yes" : "No")</td>
+                <td>@guest.TableAssignment</td>
+                <td>
+                    <a asp-action="Details" asp-route-weddingId="@guest.WeddingId" asp-route-id="@guest.Id" class="btn btn-info btn-sm">Details</a> |
+                    <a asp-action="Edit" asp-route-weddingId="@guest.WeddingId" asp-route-id="@guest.Id" class="btn btn-warning btn-sm">Edit</a> |
+                    <a asp-action="Delete" asp-route-weddingId="@guest.WeddingId" asp-route-id="@guest.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
