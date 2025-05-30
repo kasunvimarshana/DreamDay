@@ -5,6 +5,7 @@ using DreamDay.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Security.Claims;
 using System.Web;
 
@@ -25,6 +26,12 @@ namespace DreamDay.UI.Controllers
         [HttpGet("login")]
         public IActionResult Login(string? returnUrl = null)
         {
+            // Prevent authenticated users from accessing login page
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -33,6 +40,12 @@ namespace DreamDay.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel vm, string? returnUrl = null)
         {
+            // Prevent authenticated users from submitting login form
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(vm);
@@ -176,4 +189,3 @@ namespace DreamDay.UI.Controllers
 
     }
 }
-

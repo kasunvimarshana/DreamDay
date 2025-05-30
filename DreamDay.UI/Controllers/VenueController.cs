@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DreamDay.UI.Controllers
 {
     [Route("venues")]
+    [Authorize(Policy = "AuthenticatedUsers")]
     public class VenueController : Controller
     {
         private readonly IVenueService _venueService;
@@ -157,7 +158,6 @@ namespace DreamDay.UI.Controllers
 
         [HttpPost("delete/{id:int}")]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var venue = await _venueService.GetVenueByIdAsync(id);

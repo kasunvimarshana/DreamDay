@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,10 +29,11 @@ namespace DreamDay.Models.ViewModels
 
         public List<(string Value, string Text)> UserRoleOptions { get; set; } = new()
         {
+            //("SuperAdmin", "SuperAdmin"),
             ("Admin", "Admin"),
-            ("Guest", "Guest"),
+            //("Guest", "Guest"),
             ("Planner", "Planner"),
-            //("Client", "Client")
+            ("Couple", "Couple")
         };
     }
 }

@@ -10,6 +10,7 @@ using System.Numerics;
 namespace DreamDay.UI.Controllers
 {
     [Route("weddings")]
+    [Authorize(Policy = "AuthenticatedUsers")]
     public class WeddingController : Controller
     {
         private readonly IWeddingService _weddingService;
@@ -138,7 +139,6 @@ namespace DreamDay.UI.Controllers
 
         [HttpPost("delete/{id:int}")]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _weddingService.DeleteWeddingAsync(id);

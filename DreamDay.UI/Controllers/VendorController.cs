@@ -9,6 +9,7 @@ using System.Numerics;
 namespace DreamDay.UI.Controllers
 {
     [Route("vendors")]
+    [Authorize(Policy = "AuthenticatedUsers")]
     public class VendorController : Controller
     {
         private readonly IVendorService _vendorService;
@@ -156,7 +157,6 @@ namespace DreamDay.UI.Controllers
 
         [HttpPost("delete/{id:int}")]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var vendor = await _vendorService.GetVendorByIdAsync(id);

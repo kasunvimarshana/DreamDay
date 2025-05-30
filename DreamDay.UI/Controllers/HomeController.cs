@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 
 namespace DreamDay.UI.Controllers
 {
+    [Authorize(Policy = "AuthenticatedUsers")]
     public class HomeController : Controller
     {
         private readonly IDashboardService _dashboardService;
@@ -24,6 +25,12 @@ namespace DreamDay.UI.Controllers
         public async Task<IActionResult> Index()
         {
             var dashboardData = await _dashboardService.GetDashboardDataAsync();
+
+            //if(User.IsInRole("Admin"))
+            //{
+            //    return View("AdminDashboard");
+            //}
+
             return View(dashboardData);
         }
 

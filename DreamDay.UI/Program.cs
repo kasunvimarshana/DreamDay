@@ -5,9 +5,13 @@ using DreamDay.DAL.Context;
 using DreamDay.DAL.DependencyInjection;
 using DreamDay.DAL.Repositories.Implementations;
 using DreamDay.DAL.Repositories.Interfaces;
+using DreamDay.Models.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,8 +49,45 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Define role-based authorization policies
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));                  // Only Admins
-    options.AddPolicy("UserOrAdmin", policy => policy.RequireRole("User", "Admin"));        // Admin or User
+    // Basic Role-Based Policies
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
+
+    options.AddPolicy("PlannerOnly", policy =>
+        policy.RequireRole("Planner"));
+
+    options.AddPolicy("CoupleOnly", policy =>
+        policy.RequireRole("Couple"));
+
+    options.AddPolicy("GuestOnly", policy =>
+        policy.RequireRole("Guest"));
+
+    // Combined Role Policies
+    options.AddPolicy("AuthenticatedUsers", policy =>
+        policy.RequireRole("Admin", "Planner", "Couple", "Guest"));
+
+    options.AddPolicy("AdminOrPlanner", policy =>
+        policy.RequireRole("Admin", "Planner"));
+
+    options.AddPolicy("AdminOrCouple", policy =>
+        policy.RequireRole("Admin", "Couple"));
+
+    options.AddPolicy("PlannerOrCouple", policy =>
+        policy.RequireRole("Planner", "Couple"));
+
+    // Policy for Unauthenticated Users (Anonymous Access)
+    options.AddPolicy("AnonymousUsers", policy =>
+        policy.RequireAssertion(context => !context.User.Identity.IsAuthenticated));
+
+    // Policy allowing both authenticated and unauthenticated users
+    options.AddPolicy("PublicAccess", policy =>
+        policy.RequireAssertion(context => true)); // Always allow access
+
+    // Policy for specific public pages (e.g., Home, About, Contact)
+    options.AddPolicy("PublicPages", policy =>
+        policy.RequireAssertion(context =>
+            !context.User.Identity.IsAuthenticated ||
+            context.User.Identity.IsAuthenticated));
 });
 
 #endregion
@@ -117,5 +158,35 @@ app.MapControllerRoute(
 
 #endregion
 
+// Seed default admin user
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedDefaultAdminUser(services);
+}
+
 // Start the application
 app.Run();
+
+//
+
+
+async Task SeedDefaultAdminUser(IServiceProvider services)
+{
+    var userService = services.GetRequiredService<IUserService>();
+
+    // Check if admin user exists
+    var adminUser = await userService.GetUserByEmailAsync("admin@dreamday.com");
+    if (adminUser == null)
+    {
+        adminUser = new User
+        {
+            FullName = "Admin User",
+            Email = "admin@dreamday.com",
+            Password = "password",
+            Role = "Admin"
+        };
+
+        await userService.CreateUserAsync(adminUser);
+    }
+}

@@ -2,6 +2,7 @@
 using DreamDay.BLL.Services.Interfaces;
 using DreamDay.Models.Entities;
 using DreamDay.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,6 +18,7 @@ using static System.Collections.Specialized.BitVector32;
 namespace DreamDay.UI.Controllers
 {
     [Route("weddings/{weddingId:int}/wedding-checklist-items")]
+    [Authorize(Policy = "AuthenticatedUsers")]
     public class WeddingChecklistItemController : Controller
     {
         private readonly IWeddingChecklistItemService _weddingChecklistItemService;
@@ -142,7 +144,6 @@ namespace DreamDay.UI.Controllers
 
         [HttpPost("delete/{id:int}")]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int weddingId, int id)
         {
             await _weddingChecklistItemService.DeleteWeddingChecklistItemAsync(id);

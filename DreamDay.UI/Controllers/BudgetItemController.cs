@@ -10,6 +10,7 @@ using System.Numerics;
 namespace DreamDay.UI.Controllers
 {
     [Route("weddings/{weddingId:int}/budget-items")]
+    [Authorize(Policy = "AuthenticatedUsers")]
     public class BudgetItemController : Controller
     {
         private readonly IBudgetItemService _budgetItemService;

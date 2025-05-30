@@ -9,6 +9,7 @@ using System.Numerics;
 namespace DreamDay.UI.Controllers
 {
     [Route("weddings/{weddingId:int}/guests")]
+    [Authorize(Policy = "AuthenticatedUsers")]
     public class GuestController : Controller
     {
         private readonly IGuestService _guestService;

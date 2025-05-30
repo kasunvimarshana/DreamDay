@@ -26,6 +26,15 @@
     <button type="submit" class="btn btn-primary">Login</button>
 </form>
 
+
+<p class="mt-5">
+    <a asp-controller="Auth"
+       asp-action="ForgotPassword"
+       class="btn btn-outline-secondary">
+        Forgot Password
+    </a>
+</p>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

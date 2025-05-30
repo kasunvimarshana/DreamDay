@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace DreamDay.UI.Controllers
 {
     [Route("users")]
+    [Authorize(Policy = "AuthenticatedUsers")]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
@@ -22,7 +23,6 @@ namespace DreamDay.UI.Controllers
         }
 
         [HttpGet("")]
-        //[Authorize(Policy = "UserOrAdmin")]
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetAllUsersAsync();
@@ -160,7 +160,6 @@ namespace DreamDay.UI.Controllers
         }
 
         [HttpGet("delete/{id:int}")]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -173,7 +172,6 @@ namespace DreamDay.UI.Controllers
 
         [HttpPost("delete/{id:int}")]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
