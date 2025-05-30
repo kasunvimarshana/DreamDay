@@ -18,10 +18,9 @@ namespace DreamDay.Models.ViewModels
         [Required, EmailAddress]
         public string Email { get; set; }
 
-        [Required, MinLength(6)]
+        [MinLength(6)]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
-
+        public string? Password { get; set; } = string.Empty;
         public string Role { get; set; }
         [Display(Name = "Upload Image")]
         public IFormFile? ImageFile { get; set; }

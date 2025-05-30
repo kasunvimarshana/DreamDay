@@ -13,7 +13,7 @@ namespace DreamDay.BLL.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        private static readonly string[] AllowedFileExtensions = new[] { ".jpg", ".png" };
+        private static readonly string[] AllowedFileExtensions = new[] { ".jpg", ".png", ".jpeg" };
         private const int MaxFileSizeInBytes = 5 * 1024 * 1024; // 5MB
 
         public static IServiceCollection AddBusinessServices(this IServiceCollection services)
