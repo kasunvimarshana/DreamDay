@@ -20,7 +20,18 @@ namespace DreamDay.BLL.Services.Implementations
 
         public bool IsValid(string fileName, Stream fileStream)
         {
-            string extension = Path.GetExtension(fileName);
+            if (string.IsNullOrWhiteSpace(fileName) || fileStream == null)
+            {
+                return false;
+            }
+
+            string? extension = Path.GetExtension(fileName)?.ToLowerInvariant();
+
+            if (extension == null)
+            {
+                return false;
+            }
+
             return _allowedExtensions.Contains(extension) && fileStream.Length <= _maxFileSizeInBytes;
         }
     }
